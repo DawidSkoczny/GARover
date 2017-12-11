@@ -20,8 +20,8 @@ ft = 'cubicinterp';
 wsp1 = ceil(mapSize / terrainVariability);
 
 map = zeros(wsp1 * length(A), wsp1 * length(A));
-for i = 0: wsp1 * length(A)
-    for j = 0: wsp1 * length(A)
+for i = 1: wsp1 * length(A)
+    for j = 1: wsp1 * length(A)
         map(i,j) = fitresult(i / wsp1, j / wsp1);
         if map(i,j) > 5
             map(i,j) = 5; 
