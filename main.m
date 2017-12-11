@@ -1,5 +1,5 @@
 % kiedy odrzuca zbyt du¿¹ liczbe rozwi¹zañ to mo¿e siê wysypaæ
-mapa=rand(10);
+mapa=Map(10, 12);
 populacja=start(100,5);
 kontrol=kontrola(mapa, populacja, 6, 8); %
 populacja1=mutowanie(populacja,1);
