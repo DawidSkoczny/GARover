@@ -1,4 +1,4 @@
-function [posortowanaPopulacja B] = sortujPoplacje(populacja, macierzKosztow, kosztOdPktPoczatkowego, paliwo)
+function [posortowanaPopulacja] = sortujPoplacje(populacja, macierzKosztow, kosztOdPktPoczatkowego, paliwo)
   
 [x y]=size(populacja)
     posortowanaPopulacja=populacja;
