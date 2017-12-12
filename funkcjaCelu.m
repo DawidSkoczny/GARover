@@ -40,8 +40,9 @@ function [ wynik ] = funkcjaCelu( osobnik, macierzKosztow, kosztOdPoczatakowego,
            
     end
     
-    zdobyteProbki       %wyswietlam do testu
-    dlugoscTrasy 
+    zdobyteProbki;       %wyswietlam do testu
+    dlugoscTrasy; 
+    zuzyciePaliwa;
     kara=0;
     if zuzyciePaliwa>paliwo
         kara= (zuzyciePaliwa-paliwo);

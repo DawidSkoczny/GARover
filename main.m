@@ -9,7 +9,9 @@ mapa=rand(10);
 % zalozmy ze mamy ogarniety algorytm (dijkstry) poszukiwania najlepszej trasy miedzy
 % dwoma punktami, wtedy mozemy utworzyc macierz kosztow przejazdu z punktow
 % gdzie sa probki. Utworzenie przykladowej macerzy kosztow:
-%%
+%% przykładowe dane do testowania funkcji
+paliwo=100;
+
 iloscProbek=10;
  macierzKosztow=rand(iloscProbek)*40+5;
     for i=1:length(macierzKosztow)
@@ -19,6 +21,9 @@ iloscProbek=10;
         end
     end
  kosztOdPktPoczatkowego=rand(1,iloscProbek)*40+5;
+ populacjaTestowa=randi([0 iloscProbek], [15 7]);
+ populacjaTestowa(:,1)=randi([1 iloscProbek], [15 1])
+ clear i j
 %%
 
 
