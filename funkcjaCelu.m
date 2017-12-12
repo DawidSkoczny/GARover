@@ -16,6 +16,13 @@ function [ wynik ] = funkcjaCelu( osobnik, macierzKosztow, kosztOdPoczatakowego,
     zdobyteProbki=1;
     zuzyciePaliwa=kosztOdPoczatakowego(osobnik(1)) + kosztOdPoczatakowego(osobnik(dlugoscTrasy));
     
+    %na pozniej:
+    %zużycie paliwa= (1+b*n)*a*(MacierzKosztow(i,i+1))
+        %a - bazowe zużycie paliwa
+        %b - współczynnik masy próbki << 1
+        %n - ilość zdobytych próbek
+
+    
     for i=1:(dlugoscTrasy-1) 
         zuzyciePaliwa=zuzyciePaliwa+macierzKosztow(osobnik(i), osobnik(i+1));
   
