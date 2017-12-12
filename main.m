@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 %   parametry:
 paliwo=100;
 
@@ -18,6 +19,10 @@ mapa=rand(10);
     end
 %%
 
+=======
+% kiedy odrzuca zbyt du¿¹ liczbe rozwi¹zañ to mo¿e siê wysypaæ
+mapa=Map(10, 12);
+>>>>>>> 93cb3395944677c40ebd3873a1914838a211534a
 populacja=start(100,5);
 kontrol=kontrola(mapa, populacja, 6, 8); %
 populacja1=mutowanie(populacja,1, 0.1);
