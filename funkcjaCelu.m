@@ -47,6 +47,6 @@ function [ wynik ] = funkcjaCelu( osobnik, macierzKosztow, kosztOdPoczatakowego,
     if zuzyciePaliwa>paliwo
         kara= (zuzyciePaliwa-paliwo);
     end
-    wynik=zdobyteProbki*100 - kara*1000;
+    wynik=zdobyteProbki*10 - kara*2;
 end
 

@@ -17,11 +17,11 @@ iloscOsobnikowNaStarcie=100;
     end
  kosztOdPktPoczatkowego=rand(1,iloscProbek)*40+5;
  populacjaTestowa=randi([0 iloscProbek], [iloscOsobnikowNaStarcie iloscProbek+2]);
- populacjaTestowa(:,1)=randi([1 iloscProbek], [iloscOsobnikowNaStarcie 1])
+ populacjaTestowa(:,1)=randi([1 iloscProbek], [iloscOsobnikowNaStarcie 1]);
  clear i j
 %%
-paliwo=350;
-q=0.024;
+paliwo=590;
+q=0.03;
 prawdopodobnienstwoMutacji=0.05;
 licznoscPopulacji=150;
 
@@ -30,7 +30,7 @@ nowaPopulacja=selekcjaRankingowa(populacjaTestowa, macierzKosztow, kosztOdPktPoc
 clc %   w konsoli wyswietlaja sie najlepsze wyniki w danej iteracji
 for i=1:100
     nowaPopulacja=selekcjaRankingowa(nowaPopulacja, macierzKosztow, kosztOdPktPoczatkowego, paliwo, licznoscPopulacji, q);
-    nowaPopulacja=mutowanie( nowaPopulacja, 2, prawdopodobnienstwoMutacji);
+    nowaPopulacja=mutowanie( nowaPopulacja, 4, prawdopodobnienstwoMutacji);
 end
 
 
@@ -65,6 +65,8 @@ q=0.024;
 x=0:149;
 p=q*(1-q).^x
 sum(p)
+plot(x,p)
+grid on
  
  %}
 

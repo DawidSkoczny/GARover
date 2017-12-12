@@ -15,25 +15,34 @@ function [nowaPopulacja] = selekcjaRankingowa(populacja, macierzKosztow, kosztOd
     
     nowaPopulacja=zeros(iloscNowychOsobnikow*2, y);
     licznik=1;
-    numOsobnika1=1;
-    numOsobnika2=2;
+    
     while (iloscNowychOsobnikow > 0)
         iloscNowychOsobnikow=iloscNowychOsobnikow-1;
-        P=rand;
-        for i=1:x
-            if P<pWzorcowe(i)
-                numOsobnika1=i;
-                break;
+        
+        numOsobnika1=0;
+        numOsobnika2=0;
+        
+        while(numOsobnika1 == 0)
+            P=rand;
+            for i=1:x
+                if P<pWzorcowe(i)
+                    numOsobnika1=i;
+                    break;
+                end
+            end
+        end
+        
+        while(numOsobnika2 == 0)
+            P=rand;
+            for i=1:x
+                if P<pWzorcowe(i)
+                    numOsobnika2=i;
+                    break;
+                end
             end
         end
     
-        P=rand;
-        for i=1:x
-            if P<pWzorcowe(i)
-                numOsobnika2=i;
-                break;
-            end
-        end
+        
         
         [nowaPopulacja(licznik, :), nowaPopulacja(licznik+1, :) ]=TwoPointCrossover(posortowanaPopulacja(numOsobnika1,:), posortowanaPopulacja(numOsobnika2,:));
         licznik=licznik+2;
