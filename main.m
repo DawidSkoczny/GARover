@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 %   parametry:
 paliwo=100;
 
@@ -10,21 +10,24 @@ mapa=rand(10);
 % dwoma punktami, wtedy mozemy utworzyc macierz kosztow przejazdu z punktow
 % gdzie sa probki. Utworzenie przykladowej macerzy kosztow:
 %%
- macierzKosztow=rand(10)*40+5;
+iloscProbek=10;
+ macierzKosztow=rand(iloscProbek)*40+5;
     for i=1:length(macierzKosztow)
-        macierzKosztow(i,i)=999999999999; %uniemozliwienie zostania w punkcie
+        macierzKosztow(i,i)=10^10; %uniemozliwienie zostania w punkcie
         for j=i+1:length(macierzKosztow)
             macierzKosztow(i,j)=macierzKosztow(j,i);
         end
     end
+ kosztOdPktPoczatkowego=rand(1,iloscProbek)*40+5;
 %%
 
-=======
-% kiedy odrzuca zbyt du¿¹ liczbe rozwi¹zañ to mo¿e siê wysypaæ
+
+% kiedy odrzuca zbyt duï¿½ï¿½ liczbe rozwiï¿½zaï¿½ to moï¿½e siï¿½ wysypaï¿½
 mapa=Map(10, 12);
->>>>>>> 93cb3395944677c40ebd3873a1914838a211534a
+
+
 populacja=start(100,5);
-kontrol=kontrola(mapa, populacja, 6, 8); %
+kontrol=kontrola(mapa, populacja, 6, 8); 
 populacja1=mutowanie(populacja,1, 0.1);
 kontrol1=kontrola(mapa, populacja1, 6, 8)
 populacja2=mutowanie(kontrol1,1, 0.1);
