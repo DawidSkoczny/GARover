@@ -19,58 +19,46 @@ iloscOsobnikowNaStarcie=100;
  populacjaTestowa=randi([0 iloscProbek], [iloscOsobnikowNaStarcie iloscProbek+2]);
  populacjaTestowa(:,1)=randi([1 iloscProbek], [iloscOsobnikowNaStarcie 1]);
  clear i j
+ %% zmienne globalne
+ global ileRazyFunkcjaCelu;
+ global ktorePokolenie
+ global sredniaFunkcjiCelu;
+ global najlepszeFunkcjeCelu
+ 
 %%
-paliwo=590;
-q=0.03;
+close all;
+ileRazyFunkcjaCelu=0;
+ktorePokolenie=1;
+sredniaFunkcjiCelu=0;
+najlepszeFunkcjeCelu=-inf;
+
+
+paliwo=400;
+q=0.015;
 prawdopodobnienstwoMutacji=0.05;
 licznoscPopulacji=150;
 
 nowaPopulacja=selekcjaRankingowa(populacjaTestowa, macierzKosztow, kosztOdPktPoczatkowego, paliwo, licznoscPopulacji, q);
 
 clc %   w konsoli wyswietlaja sie najlepsze wyniki w danej iteracji
-for i=1:100
+for i=1:50
     nowaPopulacja=selekcjaRankingowa(nowaPopulacja, macierzKosztow, kosztOdPktPoczatkowego, paliwo, licznoscPopulacji, q);
     nowaPopulacja=mutowanie( nowaPopulacja, 4, prawdopodobnienstwoMutacji);
 end
 
-
-
-%%
-
-%{
-% kiedy odrzuca zbyt du�� liczbe rozwi�za� to mo�e si� wysypa�
-mapa=Map(10, 12);
-
-
-populacja=start(100,5);
-kontrol=kontrola(mapa, populacja, 6, 8); 
-populacja1=mutowanie(populacja,1, 0.1);
-kontrol1=kontrola(mapa, populacja1, 6, 8)
-populacja2=mutowanie(kontrol1,1, 0.1);
-kontrol2=kontrola(mapa, populacja2, 6, 8)
-populacja3=mutowanie(kontrol2,2, 0.1);
-kontrol3=kontrola(mapa, populacja3, 6, 8)
-
-%% test i zabawa
-%test
-q=0.1;
-clc;
-for i=1:100
-   p(i)=q*(1-q)^(i-1);
-end
-p
- sum(p)
- %%
-q=0.024;
-x=0:149;
-p=q*(1-q).^x
-sum(p)
-plot(x,p)
+figure(1)
+subplot(1,2,1)
+plot(1:ktorePokolenie-1, sredniaFunkcjiCelu)
 grid on
- 
- %}
+title('średnia funkcja celu')
+ylabel('srednia funkcji celu')
+xlabel('numer pokolenia')
 
+subplot(1,2,2)
+plot(1:ktorePokolenie-1, najlepszeFunkcjeCelu)
+grid on;
+title('najlepsza funcja celu')
+ylabel('funkcja celu')
+xlabel('numer pokolenia')
 
- 
- 
  

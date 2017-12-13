@@ -1,5 +1,6 @@
 function [nowaPopulacja] = selekcjaRankingowa(populacja, macierzKosztow, kosztOdPktPoczatkowego, paliwo, iloscNowychOsobnikow, q)
-
+    global ktorePokolenie
+    global najlepszeFunkcjeCelu
     % selekcja rankingowa nieliniowa
 
     posortowanaPopulacja=sortujPoplacje(populacja, macierzKosztow, kosztOdPktPoczatkowego, paliwo);
@@ -7,7 +8,8 @@ function [nowaPopulacja] = selekcjaRankingowa(populacja, macierzKosztow, kosztOd
     [x y]=size(posortowanaPopulacja);
     
     %parametr q - prawdopodobienstwo dla najlepszego osobnika;
-    funkcjaCelu( posortowanaPopulacja(1,:), macierzKosztow, kosztOdPktPoczatkowego, paliwo)
+    tmp=funkcjaCelu( posortowanaPopulacja(1,:), macierzKosztow, kosztOdPktPoczatkowego, paliwo)
+     najlepszeFunkcjeCelu(ktorePokolenie)=tmp;
     pWzorcowe=q*(1-q).^[0:x-1];
     for i=2:x
         pWzorcowe(i)=pWzorcowe(i)+pWzorcowe(i-1); % cos  w rodzaju dystrybuanty
@@ -41,24 +43,11 @@ function [nowaPopulacja] = selekcjaRankingowa(populacja, macierzKosztow, kosztOd
                 end
             end
         end
-    
-        
         
         [nowaPopulacja(licznik, :), nowaPopulacja(licznik+1, :) ]=TwoPointCrossover(posortowanaPopulacja(numOsobnika1,:), posortowanaPopulacja(numOsobnika2,:));
         licznik=licznik+2;
+         
     end
     
-    
-    
-    %sprobuje puzniej dokonczyc. a to byc selekcja rankingowa dlatego
-    %wczesniej segregujemy rozwiazania od najlepszego do najgorszego, potem
-    %jakis rozklad prawdopodobienstwa i w zasadzie mozemy skladac algorytm
-    %w calosc
-
-
-
-
-
-
-
+    ktorePokolenie=ktorePokolenie+1;
 end
