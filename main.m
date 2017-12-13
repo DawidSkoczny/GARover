@@ -4,8 +4,8 @@
 % gdzie sa probki. Utworzenie przykladowej macerzy kosztow:
 %% przykładowe dane do testowania funkcji
 
-iloscProbek=40;
-iloscOsobnikowNaStarcie=100;
+iloscProbek=100;
+iloscOsobnikowNaStarcie=150;
 
 
  macierzKosztow=rand(iloscProbek)*40+5;
@@ -33,7 +33,7 @@ sredniaFunkcjiCelu=0;
 najlepszeFunkcjeCelu=-inf;
 
 
-paliwo=400;
+paliwo=600;
 q=0.015;
 prawdopodobnienstwoMutacji=0.05;
 licznoscPopulacji=150;
@@ -45,11 +45,15 @@ for i=1:50
     nowaPopulacja=selekcjaRankingowa(nowaPopulacja, macierzKosztow, kosztOdPktPoczatkowego, paliwo, licznoscPopulacji, q);
     nowaPopulacja=mutowanie( nowaPopulacja, 4, prawdopodobnienstwoMutacji);
 end
-
+%%
+close all;
 figure(1)
 subplot(1,2,1)
 plot(1:ktorePokolenie-1, sredniaFunkcjiCelu)
 grid on
+
+axis([1, 60, -100, 1000]);
+
 title('średnia funkcja celu')
 ylabel('srednia funkcji celu')
 xlabel('numer pokolenia')

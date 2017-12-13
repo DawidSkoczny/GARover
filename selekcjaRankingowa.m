@@ -1,7 +1,8 @@
 function [nowaPopulacja] = selekcjaRankingowa(populacja, macierzKosztow, kosztOdPktPoczatkowego, paliwo, iloscNowychOsobnikow, q)
+    % selekcja rankingowa nieliniowa
     global ktorePokolenie
     global najlepszeFunkcjeCelu
-    % selekcja rankingowa nieliniowa
+    
 
     posortowanaPopulacja=sortujPoplacje(populacja, macierzKosztow, kosztOdPktPoczatkowego, paliwo);
     iloscNowychOsobnikow=floor(iloscNowychOsobnikow/2);
@@ -9,8 +10,10 @@ function [nowaPopulacja] = selekcjaRankingowa(populacja, macierzKosztow, kosztOd
     
     %parametr q - prawdopodobienstwo dla najlepszego osobnika;
     tmp=funkcjaCelu( posortowanaPopulacja(1,:), macierzKosztow, kosztOdPktPoczatkowego, paliwo)
-     najlepszeFunkcjeCelu(ktorePokolenie)=tmp;
+    najlepszeFunkcjeCelu(ktorePokolenie)=tmp;
+    
     pWzorcowe=q*(1-q).^[0:x-1];
+    
     for i=2:x
         pWzorcowe(i)=pWzorcowe(i)+pWzorcowe(i-1); % cos  w rodzaju dystrybuanty
     end
