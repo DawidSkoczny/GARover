@@ -1,7 +1,5 @@
 %% Map properties
 function map = Map( terrainVariability, mapSize)
-    %terrainVariability = 10;
-    %mapSize = 12;
 
     A = 5 * rand(terrainVariability, terrainVariability) + 1;
     figure(1);

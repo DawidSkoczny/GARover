@@ -1,4 +1,4 @@
-% funkcja mieszaj�ca losowo cechy populacji
+% funkcja mieszajaca losowo cechy populacji
 function [ populacja ] = mutowanie( populacja_startowa, ile_cech_mieszac, prawdopodobienstwo_mutacji)
 populacja= populacja_startowa;
 [m,n] = size(populacja);

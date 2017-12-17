@@ -1,7 +1,7 @@
 function [ wynik ] = funkcjaCelu( osobnik, macierzKosztow, kosztOdPoczatakowego, paliwo )
-%funkcja celu = (zebrane próbki)- (funkcja kary) -->max
-%funkcja kary = przekroczone zużycie paliwa +przejechanie przez niemożliwy do przejechania teren 
-% + nie zatrzymanie się w punkcie początkowym
+%funkcja celu = (zebrane probki)- (funkcja kary) -->max
+%funkcja kary = przekroczone zuzycie paliwa + przejechanie przez niemozliwy do przejechania teren 
+% + nie zatrzymanie sa w punkcie poczatkowym
     global ileRazyFunkcjaCelu 
     ileRazyFunkcjaCelu=ileRazyFunkcjaCelu+1;
     dlugoscTrasy=0;
@@ -18,7 +18,7 @@ function [ wynik ] = funkcjaCelu( osobnik, macierzKosztow, kosztOdPoczatakowego,
     zuzyciePaliwa=kosztOdPoczatakowego(osobnik(1)) + kosztOdPoczatakowego(osobnik(dlugoscTrasy));
     
     %na pozniej:
-    %zużycie paliwa= (1+b*n)*a*(MacierzKosztow(i,i+1))
+    %zuzycie paliwa= (1+b*n)*a*(MacierzKosztow(i,i+1))
         %a - bazowe zużycie paliwa
         %b - współczynnik masy próbki << 1
         %n - ilość zdobytych próbek
