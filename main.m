@@ -6,28 +6,35 @@
 clear variables;
 close all;
 
-terrainVariability = 5;
-mapSize = 10;
+terrainVariability = 1;
+mapSize = 4;
+mapSize = abs(floor(mapSize));
+terrainVariability = abs(floor(terrainVariability));
 
 iloscProbek = min(10, mapSize);
 iloscOsobnikowNaStarcie=150;
 
 mapTerrain = MapTerrain(terrainVariability, mapSize);
-mapSamlpes = zeros(mapSize);
+sampleMatrix = zeros(mapSize);
+samplePositions = zeros(iloscProbek, 2);
 
 j = randi([1 mapSize]);
 k = randi([1 mapSize]);
-%%
-for i = 0:iloscProbek
-    while(mapSamlpes(j, k) ~= 0)
+
+for i = 1:iloscProbek
+    while (sampleMatrix(j, k) ~= 0)
         j = randi([1 mapSize]);
         k = randi([1 mapSize]);
     end
-    mapSamlpes(j, k) = i;
+    samplePositions(i, :) = [j k];
+    sampleMatrix(j, k) = 1;
 end
+clear sampleMatrix; %Raczej ju¿ nie bêdzie potrzebna, chyba, ¿e do
+%wyœwietlenie
+surf(mapTerrain)
 %%
-macirzKosztow
-
+macierzKosztow = CostMatrix(mapSize, mapTerrain, samplePositions);
+%%
 
 %macierzKosztow=rand(iloscProbek)*40+5;
 %   for i=1:length(macierzKosztow)
