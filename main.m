@@ -7,11 +7,11 @@ clear variables;
 close all;
 
 terrainVariability = 1;
-mapSize = 4;
+mapSize = 100;
 mapSize = abs(floor(mapSize));
 terrainVariability = abs(floor(terrainVariability));
 
-iloscProbek = min(10, mapSize);
+iloscProbek = min(50, mapSize);
 iloscOsobnikowNaStarcie=150;
 
 mapTerrain = MapTerrain(terrainVariability, mapSize);
@@ -52,7 +52,7 @@ macierzKosztow = CostMatrix(mapSize, mapTerrain, samplePositions);
  global ileRazyFunkcjaCelu;
  global ktorePokolenie
  global sredniaFunkcjiCelu;
- global najlepszeFunkcjeCelu
+ global najlepszeFunkcjeCelu;
  
 %%
 close all;

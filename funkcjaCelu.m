@@ -2,7 +2,7 @@ function [ wynik ] = funkcjaCelu( osobnik, macierzKosztow, kosztOdPoczatakowego,
 %funkcja celu = (zebrane probki)- (funkcja kary) -->max
 %funkcja kary = przekroczone zuzycie paliwa + przejechanie przez niemozliwy do przejechania teren 
 % + nie zatrzymanie sa w punkcie poczatkowym
-    global ileRazyFunkcjaCelu 
+    global ileRazyFunkcjaCelu;
     ileRazyFunkcjaCelu=ileRazyFunkcjaCelu+1;
     dlugoscTrasy=0;
     

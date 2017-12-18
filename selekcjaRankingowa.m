@@ -6,10 +6,10 @@ function [nowaPopulacja] = selekcjaRankingowa(populacja, macierzKosztow, kosztOd
 
     posortowanaPopulacja=sortujPoplacje(populacja, macierzKosztow, kosztOdPktPoczatkowego, paliwo);
     iloscNowychOsobnikow=floor(iloscNowychOsobnikow/2);
-    [x y]=size(posortowanaPopulacja);
+    [x, y]=size(posortowanaPopulacja);
     
     %parametr q - prawdopodobienstwo dla najlepszego osobnika;
-    tmp=funkcjaCelu( posortowanaPopulacja(1,:), macierzKosztow, kosztOdPktPoczatkowego, paliwo)
+    tmp=funkcjaCelu( posortowanaPopulacja(1,:), macierzKosztow, kosztOdPktPoczatkowego, paliwo);
     najlepszeFunkcjeCelu(ktorePokolenie)=tmp;
     
     pWzorcowe=q*(1-q).^[0:x-1];

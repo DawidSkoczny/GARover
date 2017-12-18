@@ -11,7 +11,7 @@ function [posortowanaPopulacja] = sortujPoplacje(populacja, macierzKosztow, kosz
         
         fCelu(i)=funkcjaCelu(populacja(i,:), macierzKosztow, kosztOdPktPoczatkowego, paliwo)  ;
     end
-    [B I]=sort(fCelu, 'descend');
+    [B, I]=sort(fCelu, 'descend');
     sredniaFunkcjiCelu(ktorePokolenie)=mean(fCelu);
     
     for i=1:x

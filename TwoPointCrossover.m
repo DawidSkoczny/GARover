@@ -3,9 +3,9 @@ function [ nowyOsobnik1, nowyOsobnik2 ] = TwoPointCrossover( osobnik1, osobnik2 
 %   Partial-Mapped Crossover
 %   krzyżowanie dwuch osobnikow
 
-    [x1 y1]=size(osobnik1);
-    [x2 y2]=size(osobnik2);
-    if (x1 ~= x2 ) | (y1 ~= y2) | (x1 ~= 1)
+    [x1, y1]=size(osobnik1);
+    [x2, y2]=size(osobnik2);
+    if (x1 ~= x2 ) || (y1 ~= y2) || (x1 ~= 1)
         error('Error \n  osobniki nie mają tych samych wymiarów')
         
     end 
