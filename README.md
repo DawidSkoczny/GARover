@@ -2,8 +2,6 @@
 Path finding problem using genetic algorithm
 
 Progress:
-
-* Main ma wpisane parametry ¿eby to dzia³a³o, ale wszystko jest poustawiane tak ¿eby co odpalenie by³o nowe losowanie danych (do szukania bugów)
-* start buduje losowe populacje na pocz¹tek dzia³ania algorytmu
-* mutowanie wymienia randomow¹ ceche osobnika populacji, mo¿na regulowaæ ile cech chce siê wymieniæ
-* kontrola sprawdza czy osobnik nie wychodzi poza mape, jeœli wychodzi to go wyrzuca z macierzy rozwi¹zañ
+* Generating random terrain map
+* Initializing sample positions
+* Dijkstra algorithm to find best route between two unconnected points on map
