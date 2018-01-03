@@ -89,10 +89,16 @@ for i=1:iloscOsobnikowNaStarcie
 end
 
 
-
-
-
-
+%% testing ConnectPoints
+close all;
+startPoint=[52 145];
+stopPoint=[172 31];
+road=ConnectPoints(startPoint, stopPoint);
+plot(road(:,2), road(:,1), '--o')
+hold on
+grid on
+plot(startPoint(2), startPoint(1), 'g*')
+plot(stopPoint(2), stopPoint(1), 'r*')
 
 
 

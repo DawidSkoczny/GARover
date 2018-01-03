@@ -48,13 +48,13 @@ macierzKosztow = CostMatrix(mapSize, mapTerrain, samplePositions);
  populacjaTestowa=randi([0 iloscProbek], [iloscOsobnikowNaStarcie iloscProbek+2]);
  populacjaTestowa(:,1)=randi([1 iloscProbek], [iloscOsobnikowNaStarcie 1]);
  clear i j
- %% zmienne globalne
+ % zmienne globalne
  global ileRazyFunkcjaCelu;
  global ktorePokolenie
  global sredniaFunkcjiCelu;
  global najlepszeFunkcjeCelu;
  
-%%
+
 close all;
 ileRazyFunkcjaCelu=0;
 ktorePokolenie=1;
@@ -62,7 +62,7 @@ sredniaFunkcjiCelu=0;
 najlepszeFunkcjeCelu=-inf;
 
 
-paliwo=600;
+paliwo=50;
 q=0.015;
 prawdopodobnienstwoMutacji=0.05;
 licznoscPopulacji=150;
@@ -70,18 +70,20 @@ licznoscPopulacji=150;
 nowaPopulacja=selekcjaRankingowa(populacjaTestowa, macierzKosztow, kosztOdPktPoczatkowego, paliwo, licznoscPopulacji, q);
 
 clc %   w konsoli wyswietlaja sie najlepsze wyniki w danej iteracji
-for i=1:50
+for i=1:60
     nowaPopulacja=selekcjaRankingowa(nowaPopulacja, macierzKosztow, kosztOdPktPoczatkowego, paliwo, licznoscPopulacji, q);
     nowaPopulacja=mutowanie( nowaPopulacja, 4, prawdopodobnienstwoMutacji);
 end
-%%
+%
 close all;
 figure(1)
+surf(mapTerrain)
+figure(2)
 subplot(2,1,1)
 plot(1:ktorePokolenie-1, sredniaFunkcjiCelu)
 grid on
 
-axis([1, 60, -100, 1000]);
+axis([0, 60, -100, 1000]);
 
 title('srednia funkcja celu')
 ylabel('srednia funkcji celu')
@@ -90,8 +92,10 @@ xlabel('numer pokolenia')
 subplot(2,1,2)
 plot(1:ktorePokolenie-1, najlepszeFunkcjeCelu)
 grid on;
-title('najlepsza funcja celu')
+title('najlepsza funcja celu w danym pokoleniu')
 ylabel('funkcja celu')
 xlabel('numer pokolenia')
+axis([0, 60, 350, 500]);
+
 
  
