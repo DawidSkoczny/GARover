@@ -29,8 +29,8 @@ for i = 1:iloscProbek
     samplePositions(i, :) = [j k];
     sampleMatrix(j, k) = 1;
 end
-clear sampleMatrix; %Raczej ju¿ nie bêdzie potrzebna, chyba, ¿e do
-%wyœwietlenie
+clear sampleMatrix; %Raczej juï¿½ nie bï¿½dzie potrzebna, chyba, ï¿½e do
+%wyï¿½wietlenie
 surf(mapTerrain)
 %%
 macierzKosztow = CostMatrix(mapSize, mapTerrain, samplePositions);
@@ -77,7 +77,7 @@ end
 %%
 close all;
 figure(1)
-subplot(1,2,1)
+subplot(2,1,1)
 plot(1:ktorePokolenie-1, sredniaFunkcjiCelu)
 grid on
 
@@ -87,7 +87,7 @@ title('srednia funkcja celu')
 ylabel('srednia funkcji celu')
 xlabel('numer pokolenia')
 
-subplot(1,2,2)
+subplot(2,1,2)
 plot(1:ktorePokolenie-1, najlepszeFunkcjeCelu)
 grid on;
 title('najlepsza funcja celu')
