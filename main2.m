@@ -100,7 +100,29 @@ grid on
 plot(startPoint(2), startPoint(1), 'g*')
 plot(stopPoint(2), stopPoint(1), 'r*')
 
+%% crossover testing
+osobnik1=ConnectPoints([15 75], [32 54]);
+osobnik2=ConnectPoints([15 75], [7 45]);
 
+close all
+figure;
+plot(osobnik1(:,2),osobnik1(:,1))
+hold on;
+plot(osobnik1(length(osobnik1),2),osobnik1(length(osobnik1),1),'--or')
+plot(osobnik1(1,2),osobnik1(1,1),'--og')
 
+plot(osobnik2(:,2),osobnik2(:,1))
+plot(osobnik2(length(osobnik2),2),osobnik2(length(osobnik2),1),'--or')
+plot(osobnik2(1,2),osobnik2(1,1),'--og')
+
+[osobnik1, osobnik2]=crossover2(osobnik1, osobnik2);
+
+plot(osobnik1(:,2),osobnik1(:,1),':*')
+plot(osobnik1(length(osobnik1),2),osobnik1(length(osobnik1),1),'--or')
+plot(osobnik1(1,2),osobnik1(1,1),'--og')
+
+plot(osobnik2(:,2),osobnik2(:,1),':o')
+plot(osobnik2(length(osobnik2),2),osobnik2(length(osobnik2),1),'--or')
+plot(osobnik2(1,2),osobnik2(1,1),'--og')
 
 
