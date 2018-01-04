@@ -5,11 +5,15 @@ terrainVariability = 5;
 mapSize = 100;
 mapSize = abs(floor(mapSize));
 terrainVariability = abs(floor(terrainVariability));
+biomeVariability = 0.8;
+numberOfBiomes = 6;
 
 iloscProbek = min(50, mapSize);
 iloscOsobnikowNaStarcie=100;
 
 mapTerrain = MapTerrain(terrainVariability, mapSize);
+mapBiome = MapBiome( biomeVariability, numberOfBiomes, mapSize);
+mapTerrainDifficulty = MapTerrainDifficulty( mapTerrain, mapBiome);
 sampleMatrix = zeros(mapSize);
 samplePositions = zeros(iloscProbek, 2);
 
@@ -25,7 +29,12 @@ for i = 1:iloscProbek
     sampleMatrix(j, k) = 1;
 end
 
-surf(mapTerrain)
+    %
+    figure
+    surf(mapTerrainDifficulty)
+    axis([0 mapSize 0 mapSize -mapSize/2 mapSize/2])
+    title('Map of Difficulty Terrain')
+    %}
 %   mapTerrain - mapa
 %   sampleMatrix - mapa probek
 %       1 - jest probka
@@ -65,7 +74,7 @@ for i=1:iloscOsobnikowNaStarcie
                 otherwise 
                     display('error\n\n');
             end
-            if(road(j,1)<1 | road(j,2)<1 | road(j,1)>mapSize | road(j,2)>mapSize)
+            if(road(j,1)<1 || road(j,2)<1 || road(j,1)>mapSize || road(j,2)>mapSize)
                 flag=1;
                 
             else
@@ -84,7 +93,7 @@ end
 macierzKosztow(100,2)=99;
 
 for i=1:iloscOsobnikowNaStarcie
-    macierzKosztow(i,:)=funkcjaCelu2(population{1,i}, mapTerrain, sampleMatrix);
+    macierzKosztow(i,:)=funkcjaCelu2(population{1,i}, mapTerrainDifficulty, sampleMatrix);
     
 end
 
