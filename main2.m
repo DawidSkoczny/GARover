@@ -1,6 +1,9 @@
 clear variables;
 close all;
 
+global sampleMatrix;
+global samplePositions;
+
 terrainVariability = 5;
 mapSize = 100;
 mapSize = abs(floor(mapSize));
@@ -8,7 +11,8 @@ terrainVariability = abs(floor(terrainVariability));
 biomeVariability = 0.8;
 numberOfBiomes = 6;
 
-iloscProbek = min(50, mapSize);
+iloscProbek = 100
+iloscProbek = min(iloscProbek, floor((mapSize^2)/4));
 iloscOsobnikowNaStarcie=100;
 
 mapTerrain = MapTerrain(terrainVariability, mapSize);
@@ -134,4 +138,39 @@ plot(osobnik2(:,2),osobnik2(:,1),':o')
 plot(osobnik2(length(osobnik2),2),osobnik2(length(osobnik2),1),'--or')
 plot(osobnik2(1,2),osobnik2(1,1),'--og')
 
+%% inne generowanie populacji startowej - laczenie punktow pomiedzy probkami
 
+populacja2{iloscOsobnikowNaStarcie}=0;
+punktPoczatkowy=[40 35];
+
+
+for i=1:iloscOsobnikowNaStarcie
+    
+    ileProbekPolaczyc=randi([2, floor(iloscProbek^0.6)]);
+    connection=ConnectPoints(punktPoczatkowy, samplePositions(randi([1 length(samplePositions)]),:));
+    road=connection;
+    roadLength=length(road);
+    for j=2:ileProbekPolaczyc
+        connection=ConnectPoints(road(roadLength,:), samplePositions(randi([1 length(samplePositions)]),:));
+        [connectionLength y]=size(connection);
+        road(roadLength:roadLength+connectionLength-1,:)=connection;
+        roadLength=length(road);
+       
+    end
+   
+    connection=ConnectPoints(road(roadLength,:), punktPoczatkowy);
+    road(roadLength:roadLength+length(connection)-1,:)=connection;
+    roadLength=length(road);
+    
+    populacja2{i}=road;
+    
+end
+
+
+%% testowanie nowej populacji
+osobnik=randi([1 100])
+close all
+hold on
+plot(populacja2{1,osobnik }(:,2),populacja2{1,osobnik }(:,1))
+plot(populacja2{1,osobnik }(1,2),populacja2{1,osobnik }(1,1),'--*g')
+plot(samplePositions(:,2), samplePositions(:,1),'.r');
