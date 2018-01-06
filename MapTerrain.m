@@ -1,25 +1,25 @@
 %% Generating map of terrain
 
-function map = MapTerrain( terrainVariability, mapSize)
+function map2 = MapTerrain( terrainVariability, mapSize)
 %%
     xMax = 10;
     xMin = 0;
     marginsOfError = 3;
     
-    map2 = randn(mapSize + 2*marginsOfError);
-    map2 = map2 * 2*(xMax-xMin)/2.5 + (xMax - xMin)/2;
-    map2(map2>xMax) = xMax + 3 * marginsOfError;
-    map2(map2<xMin) = xMin - 3 * marginsOfError;
+    map = randn(mapSize + 2*marginsOfError);
+    map = map * 2*(xMax-xMin)/2.5 + (xMax - xMin)/2;
+    map(map>xMax) = xMax + 3 * marginsOfError;
+    map(map<xMin) = xMin - 3 * marginsOfError;
     h = fspecial('gaussian');
-    map2 = filter2(h, map2, 'same');
+    map = filter2(h, map, 'same');
     
     for i = 1:10 - min(terrainVariability, 9)
-        map2 = filter2(h, map2, 'same');
+        map = filter2(h, map, 'same');
     end
-    map2(map2>xMax) = xMax;
-    map2(map2<xMin | map2 <= 0) = max(xMin, 1);
-    map2(randi([1, mapSize^2], [1, (10 - min(terrainVariability, 9))])) = xMax;
-    map(1:mapSize, 1:mapSize) = map2(1+marginsOfError:mapSize+marginsOfError, 1+marginsOfError:mapSize+marginsOfError);
+    map(map>xMax) = xMax;
+    map(map<xMin | map <= 0) = max(xMin, 1);
+    map(randi([1, mapSize^2], [1, (10 - min(terrainVariability, 9))])) = xMax;
+    map2(1:mapSize, 1:mapSize) = map(1+marginsOfError:mapSize+marginsOfError, 1+marginsOfError:mapSize+marginsOfError);
     %{
     figure
     surf(map)

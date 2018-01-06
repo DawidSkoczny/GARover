@@ -1,9 +1,9 @@
 function [ mutated ] = mutation2( osobnik, mutationPropability )
     
-    global SampleMatrix
+    global sampleMatrix
     
 
-    if rand>mutationPropability
+    if rand<mutationPropability
         mutated=osobnik;
         return
     end
@@ -12,7 +12,7 @@ function [ mutated ] = mutation2( osobnik, mutationPropability )
     len=length(osobnik);
     collectedSamples=0;
     for i=1:len
-        if SampleMatrix(osobnik(i,1), osobnik(i,2)) == 1
+        if sampleMatrix(osobnik(i,1), osobnik(i,2)) == 1
             collectedSamples=collectedSamples+1;
             samples(collectedSamples,:)=[osobnik(i,1), osobnik(i,2)];
             distanceFromStart(collectedSamples)=i;

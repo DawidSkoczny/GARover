@@ -11,9 +11,14 @@ terrainVariability = abs(floor(terrainVariability));
 biomeVariability = 0.8;
 numberOfBiomes = 6;
 
-iloscProbek = 100
+iloscProbek = 100;
 iloscProbek = min(iloscProbek, floor((mapSize^2)/4));
-iloscOsobnikowNaStarcie=100;
+populationSize=100;
+
+fuel = 2000;
+q=0.015;
+
+mutationProbability = 0.8;
 
 mapTerrain = MapTerrain(terrainVariability, mapSize);
 mapBiome = MapBiome( biomeVariability, numberOfBiomes, mapSize);
@@ -46,10 +51,11 @@ end
 
 
 %% populacja startowa
+%{
 global beginningPoint;
 beginningPoint=[30 31]; % [x y]
 
-maksymalnaDlugoscTrasy=1000;
+maksymalnaDlugoscTrasy=max(1000, mapSize^2);
 minimalnaDlugosTrasy=200;
 
 population{iloscOsobnikowNaStarcie}=0;
@@ -65,7 +71,7 @@ for i=1:iloscOsobnikowNaStarcie
         while flag==1
            road(j,:)=road(j-1,:);
             choice=randi([1 4]);
-             % 1-prawo 2-lewo 3-gora -dol
+             % 1-prawo 2-lewo 3-gora 4-dol
             switch choice
                 case 1  %   prawo
                     road(j,1)=road(j,1)+1;
@@ -80,29 +86,22 @@ for i=1:iloscOsobnikowNaStarcie
             end
             if(road(j,1)<1 || road(j,2)<1 || road(j,1)>mapSize || road(j,2)>mapSize)
                 flag=1;
-                
             else
-                flag= 0;
+                flag=0;
             end 
-                
         end 
-                
     end
     population{i}=road;
     
 end
-        
-%% obliczenie kosztow populacji poczatkowej
+%}
 
-macierzKosztow(100,2)=99;
 
-for i=1:iloscOsobnikowNaStarcie
-    macierzKosztow(i,:)=funkcjaCelu2(population{1,i}, mapTerrainDifficulty, sampleMatrix);
-    
-end
+
 
 
 %% testing ConnectPoints
+%{
 close all;
 startPoint=[52 145];
 stopPoint=[172 31];
@@ -112,8 +111,10 @@ hold on
 grid on
 plot(startPoint(2), startPoint(1), 'g*')
 plot(stopPoint(2), stopPoint(1), 'r*')
+%}
 
 %% crossover testing
+%{
 osobnik1=ConnectPoints([15 75], [32 54]);
 osobnik2=ConnectPoints([15 75], [7 45]);
 
@@ -137,14 +138,15 @@ plot(osobnik1(1,2),osobnik1(1,1),'--og')
 plot(osobnik2(:,2),osobnik2(:,1),':o')
 plot(osobnik2(length(osobnik2),2),osobnik2(length(osobnik2),1),'--or')
 plot(osobnik2(1,2),osobnik2(1,1),'--og')
+%}
 
 %% inne generowanie populacji startowej - laczenie punktow pomiedzy probkami
-
-populacja2{iloscOsobnikowNaStarcie}=0;
+%
+populacja2{populationSize}=0;
 punktPoczatkowy=[40 35];
 
 
-for i=1:iloscOsobnikowNaStarcie
+for i=1:populationSize
     
     ileProbekPolaczyc=randi([2, floor(iloscProbek^0.6)]);
     connection=ConnectPoints(punktPoczatkowy, samplePositions(randi([1 length(samplePositions)]),:));
@@ -152,10 +154,9 @@ for i=1:iloscOsobnikowNaStarcie
     roadLength=length(road);
     for j=2:ileProbekPolaczyc
         connection=ConnectPoints(road(roadLength,:), samplePositions(randi([1 length(samplePositions)]),:));
-        [connectionLength y]=size(connection);
+        [connectionLength, ~]=size(connection);
         road(roadLength:roadLength+connectionLength-1,:)=connection;
         roadLength=length(road);
-       
     end
    
     connection=ConnectPoints(road(roadLength,:), punktPoczatkowy);
@@ -163,14 +164,60 @@ for i=1:iloscOsobnikowNaStarcie
     roadLength=length(road);
     
     populacja2{i}=road;
-    
 end
-
+%}
 
 %% testowanie nowej populacji
-osobnik=randi([1 100])
+%{
+osobnik=randi([1 100]);
 close all
 hold on
 plot(populacja2{1,osobnik }(:,2),populacja2{1,osobnik }(:,1))
 plot(populacja2{1,osobnik }(1,2),populacja2{1,osobnik }(1,1),'--*g')
 plot(samplePositions(:,2), samplePositions(:,1),'.r');
+%}
+
+
+%% obliczenie kosztow populacji poczatkowej
+
+fitnessFunction = zeros(populationSize,1);
+
+for i=1:populationSize
+    fitnessFunction(i) = funkcjaCelu2(populacja2{1,i}, mapTerrainDifficulty, sampleMatrix, fuel);
+end
+
+%% sortowanie populacji
+
+sortedPopulation{populationSize} = 0;
+[~, I] = sort(fitnessFunction, 'descend');
+for i=1:populationSize
+    sortedPopulation{i}=populacja2{i};
+end
+
+%% krzy¿owanie na podstawie selekcji rankingowej
+
+population2 = selekcjaRankingowa2(sortedPopulation, populationSize, q);
+
+%% mutowanie osobników 
+% -----------W FUNKCJI NUMERU POKOLENIA--------------
+
+for i = 1:populationSize
+    population2{i} = mutation2(population2{i}, mutationProbability);
+end
+
+
+
+%{
+osobnik=randi([1 100]);
+close all
+hold on
+plot(populacja2{1,osobnik }(:,2),populacja2{1,osobnik }(:,1))
+plot(populacja2{1,osobnik }(1,2),populacja2{1,osobnik }(1,1),'--*g')
+plot(samplePositions(:,2), samplePositions(:,1),'.r');
+%%
+osobnik=randi([1 100]);
+hold on
+plot(populacja2{1,osobnik }(:,2),populacja2{1,osobnik }(:,1))
+plot(populacja2{1,osobnik }(1,2),populacja2{1,osobnik }(1,1),':*m')
+plot(samplePositions(:,2), samplePositions(:,1),'.b');
+%}

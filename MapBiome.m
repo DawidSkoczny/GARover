@@ -6,11 +6,13 @@
     %biomeVariability - probability of creating new biome
     %numberOfBiomes - starting number of biomes
     
-function map2 = MapBiome( biomeVariability, numberOfBiomes, mapSize)
+function map = MapBiome( biomeVariability, numberOfBiomes, mapSize)
 %%
-%biomeVariability = 0.8; % 80% for getting new biome
-%numberOfBiomes = 6;
-%mapSize = 10;
+%{
+biomeVariability = 0.8; % 80% for getting new biome
+numberOfBiomes = 10;
+mapSize = 100;
+%}
 %%
     map = zeros(mapSize);
     
@@ -32,17 +34,17 @@ function map2 = MapBiome( biomeVariability, numberOfBiomes, mapSize)
     end
     
     %%
-    [~,map2] = bwdist(map, 'euclidean');
-    map2 = double(map2);
+    [~,map] = bwdist(map, 'euclidean');
+    map = double(map);
     
     for i = 1:numberOfBiomes
-       indexes = map2 == location(i);
-       map2(indexes) = biomeNumber(i);
+       indexes = map == location(i);
+       map(indexes) = biomeNumber(i);
     end
     %%
     %{
     figure
-    surf(map2)
+    surf(map)
     axis([0 mapSize 0 mapSize -mapSize/numberOfBiomes mapSize/numberOfBiomes])
     title('Map of Biomes')
     %}

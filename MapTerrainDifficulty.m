@@ -2,7 +2,8 @@
 
 function mapTerrainDifficulty = MapTerrainDifficulty( mapTerrain, mapBiome)
 %%
-    mapTerrainDifficulty = 6/10 * mapTerrain + 4/10 * mapBiome;
+    mapTerrainDifficulty = 4/10 * mapTerrain + 6/10 * mapBiome;
     mapTerrainDifficulty(mapTerrain == 10) = 10; %xMax form MapTerrain
+    mapTerrainDifficulty(mapBiome == 10) = 10; %xMax form MapTerrain
 %%
 end
