@@ -19,6 +19,7 @@ function [ fCelu ] = funkcjaCelu2( individual, mapTerrainDifficulty, samplesMap,
         penaltyFunction = 0.3*(petrolCost-fuel).^2;
     end
     
+    %samplesCollected
     fCelu = 10*(log(samplesCollected)/log(2)+0.2*samplesCollected) - penaltyFunction;
     
 end
