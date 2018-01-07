@@ -31,11 +31,11 @@ function [ mutated ] = mutation2( osobnik, mutationProbability )
         breakPoint2=randi([breakPoint1+1, len-1]);
         startPoint=osobnik(breakPoint1,:);
         stopPoint=osobnik(breakPoint2,:);
-        % ----------- ---------------- ---------------- ------------- JEŒLI
-        % OSOBNIK NIE ZBIERZE > 2 PRÓBKI, W NASTÊPNEJ LINIJCE WYCHODZIMY
+        % ----------- ---------------- ---------------- ------------- JEï¿½LI
+        % OSOBNIK NIE ZBIERZE > 2 PRï¿½BKI, W NASTï¿½PNEJ LINIJCE WYCHODZIMY
         % POZA MACIERZ "distanceFromStart"
-        startDistance=distanceFromStart(breakPoint1);
-        stopDistance=distanceFromStart(len-breakPoint2+1);
+        startDistance=breakPoint1;
+        stopDistance=breakPoint2;
     end
     %}
     connection=ConnectPoints(startPoint, stopPoint);
