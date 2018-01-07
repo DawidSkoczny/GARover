@@ -1,14 +1,12 @@
-function [ mutated ] = mutation2( osobnik, mutationPropability )
-    
+function [ mutated ] = mutation2( osobnik, mutationProbability )
+%%
     global sampleMatrix
-    
 
-    if rand<mutationPropability
+    if rand<mutationProbability
         mutated=osobnik;
         return
     end
-    
-    
+ 
     len=length(osobnik);
     collectedSamples=0;
     for i=1:len
@@ -18,6 +16,7 @@ function [ mutated ] = mutation2( osobnik, mutationPropability )
             distanceFromStart(collectedSamples)=i;
         end
     end
+
     if collectedSamples>2
         breakPoint=randi([1 collectedSamples-1]);
         startPoint=samples(breakPoint,:);
@@ -34,11 +33,12 @@ function [ mutated ] = mutation2( osobnik, mutationPropability )
     end
     
     connection=ConnectPoints(startPoint, stopPoint);
-    mutated=osobnik(1:startDistance,:);
-    lenAfterConnection=startDistance+length(connection)
-    mutated(startDistance:lenAfterConnection,:)=connection;
-    mutated(lenAfterConnection:lenAfterConnection+len-stopDistance+2,:)=osobnik(stopDistance:len,:)
     
-    
+    mutated=osobnik(1:startDistance,1:2);
+    lenAfterConnection=startDistance+length(connection);
+    mutated(startDistance:lenAfterConnection-1,1:2)=connection(1:length(connection),1:2);
+    mutated(lenAfterConnection:lenAfterConnection+len-stopDistance-1,1:2)=osobnik(stopDistance+1:len,1:2);
+
+  %%
 end
 

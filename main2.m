@@ -13,7 +13,7 @@ numberOfBiomes = 6;
 
 iloscProbek = 100;
 iloscProbek = min(iloscProbek, floor((mapSize^2)/4));
-populationSize=100;
+populationSize=10;
 
 fuel = 2000;
 q=0.015;
@@ -201,8 +201,8 @@ population2 = selekcjaRankingowa2(sortedPopulation, populationSize, q);
 %% mutowanie osobników 
 % -----------W FUNKCJI NUMERU POKOLENIA--------------
 
-for i = 1:populationSize
-    population2{i} = mutation2(population2{i}, mutationProbability);
+for i = 1:1
+    %population2{i} = mutation2(population2{i}, mutationProbability);
 end
 
 
