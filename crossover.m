@@ -3,7 +3,7 @@
 function [population] = crossover(oldSortedPopulation, PopulationSize, q, mapTerrainDifficulty, sampleMatrix, fuel)
 %%
     
-    newPopulationSize = PopulationSize-20; % to bym wywalil
+    newPopulationSize = PopulationSize-5; 
     pWzorcowe=q*(1-q).^[0:PopulationSize-1];
 
     for i=2:PopulationSize
@@ -66,7 +66,7 @@ function [population] = crossover(oldSortedPopulation, PopulationSize, q, mapTer
        
     end
      %% Wrzucenie 20 najlepszych osobnikow ze starej populacji do nowej
-     population(1, length(population):length(population)+19)=oldSortedPopulation(1:1+19);
+     population(1, length(population):length(population)+5)=oldSortedPopulation(1:1+5);
     
     
     %% Wybieranie najlepszych osobnik�w

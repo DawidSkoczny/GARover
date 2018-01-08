@@ -14,7 +14,7 @@ numberOfBiomes = 6;
 iloscProbek = 300;
 iloscProbek = min(iloscProbek, floor((mapSize^2)/4));
 populationSize = 200;
-howManyGenerations = 100;
+howManyGenerations = 300;
 
 fuel = 800;
 q=0.01;
@@ -91,10 +91,12 @@ end
 %}
 
 %% glowna petla
+bestGoalFunc=zeros(1,howManyGenerations);
+meanGoalFunc=zeros(1,howManyGenerations);
 
-for j = 1:300
+for j = 1:howManyGenerations
 
-    %% mutowanie osobnik�w 
+    % mutowanie osobnik�w 
     % -----------W FUNKCJI NUMERU POKOLENIA--------------
 
     for i = 1:populationSize
@@ -102,7 +104,7 @@ for j = 1:300
             population{i} = mutation2(population{i}, sampleMatrix);
         end
     end
-    %% sortowanie populacji
+    % sortowanie populacji
     fitnessFunction = zeros(populationSize,1);
 
     for i=1:populationSize
@@ -113,10 +115,12 @@ for j = 1:300
         sortedPopulation{i}=population{I(i)};
         sortedFitnessFunction(i)=fitnessFunction(I(i));
     end
-    %% krzy�owanie na podstawie selekcji rankingowej
+    
+    % krzy�owanie na podstawie selekcji rankingowej
  %error('msg')
     population = crossover(sortedPopulation, populationSize, q, mapTerrainDifficulty, sampleMatrix, fuel);
-
+    bestGoalFunc(j)=max(fitnessFunction);
+    meanGoalFunc(j)=mean(fitnessFunction);
 
 end
 
@@ -135,7 +139,7 @@ surf(mapTerrainDifficulty)
 axis([0 mapSize 0 mapSize -mapSize/2 mapSize/2])
 title('Map of Difficulty Terrain')
 
-osobnik=I(1) % najlepszy osobnik
+osobnik=I(1); % najlepszy osobnik
 hold on
 wysokoscTrasy(length(population{1, osobnik}))=0;
 for i=1:length(population{1, osobnik})
@@ -148,16 +152,21 @@ end
 
 
 plot3(population{1, osobnik}(:, 2), population{1, osobnik}(:,1),wysokoscTrasy+0.2, 'magenta','LineWidth',2)
-plot3(samplePositions(:, 2), samplePositions(:, 1), wysokoscProbek+0.2, '.r','MarkerSize',15);
-nast=plot3(population{1, osobnik}(1, 2), population{1, osobnik}(1,1), wysokoscTrasy(1)+0.2, 'g*');
-nast.MarkerSize=10;
-nast.LineWidth=3;
+plot3(samplePositions(:, 2), samplePositions(:, 1), wysokoscProbek+0.2, '.r','MarkerSize',16);
+nast=plot3(population{1, osobnik}(1, 2), population{1, osobnik}(1,1), wysokoscTrasy(1)+0.2, 'g.');
+nast.MarkerSize=30;
+nast.LineWidth=6;
 
-disp('najllepszy sosbnik to osobnik nr')
-disp(I(1))
-disp('funkcja celu najlepszego osobnika to')
-disp(fitnessFunction(I(1)))
+str=sprintf('Najlepszy osobnik nr %i, jego funkcja celu to %d', I(1),fitnessFunction(I(1)))
+title(str)
 
+figure
+subplot(2,1,1)
+plot(bestGoalFunc);
+title('funckaj celu najlpeszego osobnika w populacji');
+subplot(2,1,2)
+plot(meanGoalFunc);
+title('srednia funkcja celu w danej populacji');
 %osobnik=randi([1 populationSize]);
 %plot3(population{1, osobnik}(:, 2), population{1, osobnik}(:,1), 10*ones(1, length(population{1, osobnik})), 'white')
 %}

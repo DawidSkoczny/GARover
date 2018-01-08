@@ -22,7 +22,7 @@ function [ fCelu ] = funkcjaCelu2( individual, mapTerrainDifficulty, samplesMap,
     end
     
     %samplesCollected
-    fCelu=10*samplesCollected - 7*penaltyFunction;
+    fCelu=10*samplesCollected - penaltyFunction;
     %fCelu = 10*(log(samplesCollected)/log(2)+0.2*samplesCollected) - penaltyFunction;
     % Wieksze znaczenie w jakim terenie sie porusza
     
