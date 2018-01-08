@@ -1,10 +1,7 @@
-function [ mutated ] = mutation2( osobnik, mutationProbability, sampleMatrix )
+function [ mutated ] = mutation2( osobnik, sampleMatrix )
 %%
     
-    if rand<mutationProbability
-        mutated=osobnik;
-        return
-    end
+    
  
     [len, ~] = size(osobnik);
     collectedSamples=0;

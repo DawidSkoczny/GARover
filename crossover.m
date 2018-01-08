@@ -1,25 +1,25 @@
 % selekcja rankingowa nieliniowa
 
-function [sortedPopulation] = crossover(firstPopulation, oldPopulationSize, q, mapTerrainDifficulty, sampleMatrix, fuel)
+function [population] = crossover(oldSortedPopulation, PopulationSize, q, mapTerrainDifficulty, sampleMatrix, fuel)
 %%
     
-    newPopulationSize = 2 * oldPopulationSize;
-    pWzorcowe=q*(1-q).^[0:oldPopulationSize-1];
+    newPopulationSize = PopulationSize-20; % to bym wywalil
+    pWzorcowe=q*(1-q).^[0:PopulationSize-1];
 
-    for i=2:oldPopulationSize
+    for i=2:PopulationSize
         pWzorcowe(i)=pWzorcowe(i)+pWzorcowe(i-1); % cos  w rodzaju dystrybuanty
     end
 
-    population{newPopulationSize}=0;
+    population{1,newPopulationSize-2}=0;
     
-    for licznik = 1:2:newPopulationSize
+    for licznik = 1:2:newPopulationSize+1
 
         numOsobnika1=0;
         numOsobnika2=0;
 
         while(numOsobnika1 == 0)
             P=rand;
-            for i=1:oldPopulationSize
+            for i=1:PopulationSize
                 if P<pWzorcowe(i)
                     numOsobnika1=i;
                     break;
@@ -29,7 +29,7 @@ function [sortedPopulation] = crossover(firstPopulation, oldPopulationSize, q, m
 
         while(numOsobnika2 == 0)
             P=rand;
-            for i=1:oldPopulationSize
+            for i=1:PopulationSize
                 if P<pWzorcowe(i)
                     numOsobnika2=i;
                     break;
@@ -37,16 +37,16 @@ function [sortedPopulation] = crossover(firstPopulation, oldPopulationSize, q, m
             end
         end
 
-        whereToConnect = randi([1 min(length(firstPopulation{numOsobnika1}) - 2 , length(firstPopulation{numOsobnika2}) - 2)]);
+        whereToConnect = randi([1 min(length(oldSortedPopulation{numOsobnika1}) - 2 , length(oldSortedPopulation{numOsobnika2}) - 2)]);
 
         %warning('whereToConnect = %i', whereToConnect)
         %warning('numOsobnika1 = %i', length(sortedPopulation{numOsobnika1}))
         %warning('numOsobnika2 = %i', length(sortedPopulation{numOsobnika2}))
         
-        firstPoint1 = firstPopulation{numOsobnika1}(whereToConnect, 1:2);
-        firstPoint2 = firstPopulation{numOsobnika2}(whereToConnect, 1:2);
-        secondPoint1 = firstPopulation{numOsobnika2}(whereToConnect + 1, 1:2);
-        secondPoint2 = firstPopulation{numOsobnika1}(whereToConnect + 1, 1:2);
+        firstPoint1 = oldSortedPopulation{numOsobnika1}(whereToConnect, 1:2);
+        firstPoint2 = oldSortedPopulation{numOsobnika2}(whereToConnect, 1:2);
+        secondPoint1 = oldSortedPopulation{numOsobnika2}(whereToConnect + 1, 1:2);
+        secondPoint2 = oldSortedPopulation{numOsobnika1}(whereToConnect + 1, 1:2);
         
         connection1 = ConnectPoints(firstPoint1, secondPoint1);
         connection2 = ConnectPoints(firstPoint2, secondPoint2);
@@ -55,19 +55,24 @@ function [sortedPopulation] = crossover(firstPopulation, oldPopulationSize, q, m
         [connectionLength2, ~] = size(connection2);
         
         %
-        population{licznik}(1:whereToConnect, 1:2) = firstPopulation{numOsobnika1}(1:whereToConnect, 1:2);
-        population{licznik}(whereToConnect + 1:whereToConnect + connectionLength1, 1:2) = connection1(1:connectionLength1, 1:2);
-        population{licznik}(whereToConnect + 1 + connectionLength1:length(firstPopulation{numOsobnika2}) + connectionLength1, 1:2) = firstPopulation{numOsobnika2}(whereToConnect + 1:length(firstPopulation{numOsobnika2}), 1:2);
+        population{1,licznik}(1:whereToConnect, 1:2) = oldSortedPopulation{numOsobnika1}(1:whereToConnect, 1:2);
+        population{1,licznik}(whereToConnect + 1:whereToConnect + connectionLength1, 1:2) = connection1(1:connectionLength1, 1:2);
+        population{1,licznik}(whereToConnect + 1 + connectionLength1:length(oldSortedPopulation{numOsobnika2}) + connectionLength1, 1:2) = oldSortedPopulation{numOsobnika2}(whereToConnect + 1:length(oldSortedPopulation{numOsobnika2}), 1:2);
 
-        population{licznik + 1}(1:whereToConnect, 1:2) = firstPopulation{numOsobnika2}(1:whereToConnect, 1:2);
-        population{licznik + 1}(whereToConnect + 1:whereToConnect + connectionLength2, 1:2) = connection2(1:connectionLength2, 1:2);
-        population{licznik + 1}(whereToConnect + 1 + connectionLength2:length(firstPopulation{numOsobnika1}) + connectionLength2, 1:2) = firstPopulation{numOsobnika1}(whereToConnect + 1:length(firstPopulation{numOsobnika1}), 1:2);
+        population{1,licznik + 1}(1:whereToConnect, 1:2) = oldSortedPopulation{numOsobnika2}(1:whereToConnect, 1:2);
+        population{1,licznik + 1}(whereToConnect + 1:whereToConnect + connectionLength2, 1:2) = connection2(1:connectionLength2, 1:2);
+        population{1,licznik + 1}(whereToConnect + 1 + connectionLength2:length(oldSortedPopulation{numOsobnika1}) + connectionLength2, 1:2) = oldSortedPopulation{numOsobnika1}(whereToConnect + 1:length(oldSortedPopulation{numOsobnika1}), 1:2);
         %}
        
     end
-     
-    %% Wybieranie najlepszych osobników
-
+     %% Wrzucenie 20 najlepszych osobnikow ze starej populacji do nowej
+     population(1, length(population):length(population)+19)=oldSortedPopulation(1:1+19);
+    
+    
+    %% Wybieranie najlepszych osobnikï¿½w
+%{      
+    ja to bym sortowal populacje po mutacji
+    
     fitnessFunction = zeros(newPopulationSize,1);
 
     for i=1:newPopulationSize
@@ -81,6 +86,6 @@ function [sortedPopulation] = crossover(firstPopulation, oldPopulationSize, q, m
     end
     
     sortedPopulation = sortedPopulation(1:oldPopulationSize);
-    
+    %}
     %%
 end

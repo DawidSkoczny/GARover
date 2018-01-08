@@ -13,11 +13,11 @@ numberOfBiomes = 6;
 
 iloscProbek = 300;
 iloscProbek = min(iloscProbek, floor((mapSize^2)/4));
-populationSize = 50;
+populationSize = 200;
 howManyGenerations = 100;
 
-fuel = 2000;
-q=0.015;
+fuel = 1400;
+q=0.01;
 
 mutationProbability = 0.08;
 
@@ -48,7 +48,7 @@ punktPoczatkowy=[40 35];
 
 for i=1:populationSize
     
-    ileProbekPolaczyc=randi([2, floor(iloscProbek^0.6)]);
+    ileProbekPolaczyc=randi([2, 15]);
     connection=ConnectPoints(punktPoczatkowy, samplePositions(randi([1 length(samplePositions)]),:));
     road=connection;
     [roadLength, ~] = size(road);
@@ -82,26 +82,38 @@ end
 %% sortowanie populacji
 
 sortedPopulation{populationSize} = 0;
+sortedFitnessFunction(populationSize)=0;
 [~, I] = sort(fitnessFunction, 'descend');
 for i=1:populationSize
     sortedPopulation{i}=population{I(i)};
+    sortedFitnessFunction(i)=fitnessFunction(I(i));
 end
 %}
 
 %% glowna petla
 
-for j = 1:howManyGenerations
+for j = 1:250
 
-    %% mutowanie osobników 
+    %% mutowanie osobnikï¿½w 
     % -----------W FUNKCJI NUMERU POKOLENIA--------------
 
     for i = 1:populationSize
         if rand < mutationProbability
-            population{i} = mutation2(population{i}, mutationProbability, sampleMatrix);
+            population{i} = mutation2(population{i}, sampleMatrix);
         end
     end
-    
-    %% krzy¿owanie na podstawie selekcji rankingowej
+    %% sortowanie populacji
+    fitnessFunction = zeros(populationSize,1);
+
+    for i=1:populationSize
+        fitnessFunction(i) = funkcjaCelu2(population{1,i}, mapTerrainDifficulty, sampleMatrix, fuel);
+    end
+     [~, I] = sort(fitnessFunction, 'descend');
+    for i=1:populationSize
+        sortedPopulation{i}=population{I(i)};
+        sortedFitnessFunction(i)=fitnessFunction(I(i));
+    end
+    %% krzyï¿½owanie na podstawie selekcji rankingowej
  %error('msg')
     population = crossover(sortedPopulation, populationSize, q, mapTerrainDifficulty, sampleMatrix, fuel);
 
@@ -112,16 +124,29 @@ end
 
 %% prezentacja wynikow
 %
+for i=1:length(population)
+    fitnessFunction(i) = funkcjaCelu2(population{1,i}, mapTerrainDifficulty, sampleMatrix, fuel);
+end
+[~, I] = sort(fitnessFunction, 'descend');
+
+
 figure
 surf(mapTerrainDifficulty)
 axis([0 mapSize 0 mapSize -mapSize/2 mapSize/2])
 title('Map of Difficulty Terrain')
 
-osobnik=randi([1 populationSize]);
+osobnik=I(1) % najlepszy osobnik
 hold on
-plot3(population{1, osobnik}(:, 2), population{1, osobnik}(:,1), 10*ones(1, length(population{1, osobnik})), 'magenta')
-plot3(population{1, osobnik}(1, 2), population{1, osobnik}(1,1), 10, '--*g')
-plot3(samplePositions(:, 2), samplePositions(:, 1), 10*ones(iloscProbek, 1), '.r');
+plot3(population{1, osobnik}(:, 2), population{1, osobnik}(:,1), 10*ones(1, length(population{1, osobnik})), 'magenta','LineWidth',2)
+plot3(samplePositions(:, 2), samplePositions(:, 1), 10*ones(iloscProbek, 1), '.r','MarkerSize',10);
+nast=plot3(population{1, osobnik}(1, 2), population{1, osobnik}(1,1), 10, 'g*');
+nast.MarkerSize=10;
+nast.LineWidth=3;
+
+disp('najllepszy sosbnik to osobnik nr')
+disp(I(1))
+disp('funkcja celu najlepszego osobnika to')
+disp(fitnessFunction(I(1)))
 
 %osobnik=randi([1 populationSize]);
 %plot3(population{1, osobnik}(:, 2), population{1, osobnik}(:,1), 10*ones(1, length(population{1, osobnik})), 'white')
