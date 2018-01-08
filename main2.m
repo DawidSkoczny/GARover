@@ -16,7 +16,7 @@ iloscProbek = min(iloscProbek, floor((mapSize^2)/4));
 populationSize = 200;
 howManyGenerations = 100;
 
-fuel = 1400;
+fuel = 800;
 q=0.01;
 
 mutationProbability = 0.08;
@@ -92,7 +92,7 @@ end
 
 %% glowna petla
 
-for j = 1:250
+for j = 1:300
 
     %% mutowanie osobnik�w 
     % -----------W FUNKCJI NUMERU POKOLENIA--------------
@@ -137,9 +137,19 @@ title('Map of Difficulty Terrain')
 
 osobnik=I(1) % najlepszy osobnik
 hold on
-plot3(population{1, osobnik}(:, 2), population{1, osobnik}(:,1), 10*ones(1, length(population{1, osobnik})), 'magenta','LineWidth',2)
-plot3(samplePositions(:, 2), samplePositions(:, 1), 10*ones(iloscProbek, 1), '.r','MarkerSize',10);
-nast=plot3(population{1, osobnik}(1, 2), population{1, osobnik}(1,1), 10, 'g*');
+wysokoscTrasy(length(population{1, osobnik}))=0;
+for i=1:length(population{1, osobnik})
+    wysokoscTrasy(i)=mapTerrainDifficulty(population{1, osobnik}(i,1),population{1, osobnik}(i,2)); 
+end
+wysokoscProbek(length(samplePositions))=0;
+for i=1:length(samplePositions)
+    wysokoscProbek(i)=mapTerrainDifficulty(samplePositions(i,1),samplePositions(i,2)); 
+end
+
+
+plot3(population{1, osobnik}(:, 2), population{1, osobnik}(:,1),wysokoscTrasy+0.2, 'magenta','LineWidth',2)
+plot3(samplePositions(:, 2), samplePositions(:, 1), wysokoscProbek+0.2, '.r','MarkerSize',15);
+nast=plot3(population{1, osobnik}(1, 2), population{1, osobnik}(1,1), wysokoscTrasy(1)+0.2, 'g*');
 nast.MarkerSize=10;
 nast.LineWidth=3;
 
