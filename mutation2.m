@@ -7,7 +7,6 @@ function [ mutated ] = mutation2( osobnik, mutationProbability )
         return
     end
  
-    %len=length(osobnik);
     [len, ~] = size(osobnik);
     collectedSamples=0;
     
@@ -31,9 +30,6 @@ function [ mutated ] = mutation2( osobnik, mutationProbability )
         breakPoint2=randi([breakPoint1+1, len-1]);
         startPoint=osobnik(breakPoint1,:);
         stopPoint=osobnik(breakPoint2,:);
-        % ----------- ---------------- ---------------- ------------- JE�LI
-        % OSOBNIK NIE ZBIERZE > 2 PR�BKI, W NAST�PNEJ LINIJCE WYCHODZIMY
-        % POZA MACIERZ "distanceFromStart"
         startDistance=breakPoint1;
         stopDistance=breakPoint2;
     end

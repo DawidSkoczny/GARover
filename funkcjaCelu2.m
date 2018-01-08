@@ -21,6 +21,6 @@ function [ fCelu ] = funkcjaCelu2( individual, mapTerrainDifficulty, samplesMap,
     
     %samplesCollected
     fCelu = 10*(log(samplesCollected)/log(2)+0.2*samplesCollected) - penaltyFunction;
+    % W funkcji dlugosci drogi
     
 end
-%   obliczenie dijkstra odleglosci koncowego punktu i funkcja kary
