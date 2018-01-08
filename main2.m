@@ -1,11 +1,8 @@
-%%
+%% czyszczenie srodowiska
 clear variables;
 close all;
 
 %% inicjalizacja
-
-global sampleMatrix;
-global samplePositions;
 
 terrainVariability = 5;
 mapSize = 100;
@@ -17,7 +14,7 @@ numberOfBiomes = 6;
 iloscProbek = 300;
 iloscProbek = min(iloscProbek, floor((mapSize^2)/4));
 populationSize = 50;
-howManyGenerations = 50;
+howManyGenerations = 100;
 
 fuel = 2000;
 q=0.015;
@@ -100,7 +97,7 @@ for j = 1:howManyGenerations
 
     for i = 1:populationSize
         if rand < mutationProbability
-            population{i} = mutation2(population{i}, mutationProbability);
+            population{i} = mutation2(population{i}, mutationProbability, sampleMatrix);
         end
     end
     

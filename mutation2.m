@@ -1,6 +1,5 @@
-function [ mutated ] = mutation2( osobnik, mutationProbability )
+function [ mutated ] = mutation2( osobnik, mutationProbability, sampleMatrix )
 %%
-    global sampleMatrix
     
     if rand<mutationProbability
         mutated=osobnik;
