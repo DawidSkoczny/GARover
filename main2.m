@@ -16,10 +16,10 @@ iloscProbek = min(iloscProbek, floor((mapSize^2)/4));
 populationSize = 200;
 howManyGenerations = 300;
 
-fuel = 800;
+fuel = 1400;
 q=0.01;
 
-mutationProbability = 0.08;
+mutationProbability = 0.10;
 
 mapTerrain = MapTerrain(terrainVariability, mapSize);
 mapBiome = MapBiome( biomeVariability, numberOfBiomes, mapSize);
@@ -96,14 +96,15 @@ meanGoalFunc=zeros(1,howManyGenerations);
 
 for j = 1:howManyGenerations
 
-    % mutowanie osobnik�w 
-    % -----------W FUNKCJI NUMERU POKOLENIA--------------
-
+    % mutowanie osobnikow 
+    mutationProbability = 0.99 * mutationProbability;
+    
     for i = 1:populationSize
         if rand < mutationProbability
             population{i} = mutation2(population{i}, sampleMatrix);
         end
     end
+    
     % sortowanie populacji
     fitnessFunction = zeros(populationSize,1);
 
@@ -117,7 +118,6 @@ for j = 1:howManyGenerations
     end
     
     % krzy�owanie na podstawie selekcji rankingowej
- %error('msg')
     population = crossover(sortedPopulation, populationSize, q, mapTerrainDifficulty, sampleMatrix, fuel);
     bestGoalFunc(j)=max(fitnessFunction);
     meanGoalFunc(j)=mean(fitnessFunction);
@@ -167,6 +167,3 @@ title('funckaj celu najlpeszego osobnika w populacji');
 subplot(2,1,2)
 plot(meanGoalFunc);
 title('srednia funkcja celu w danej populacji');
-%osobnik=randi([1 populationSize]);
-%plot3(population{1, osobnik}(:, 2), population{1, osobnik}(:,1), 10*ones(1, length(population{1, osobnik})), 'white')
-%}

@@ -3,7 +3,7 @@ function [ fCelu ] = funkcjaCelu2( individual, mapTerrainDifficulty, samplesMap,
     [roadLength, ~] = size(individual);
     petrolCost=0;
     samplesCollected=0;
-    mapTerrainDifficulty(mapTerrainDifficulty == 10) = 1000;
+    mapTerrainDifficulty(mapTerrainDifficulty == 10) = 200;
 
     for i=1:roadLength
         petrolCost=petrolCost+mapTerrainDifficulty(individual(i,1), individual(i,2));
