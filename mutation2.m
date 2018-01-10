@@ -1,4 +1,4 @@
-function [ mutated ] = mutation2( osobnik, sampleMatrix )
+function [ mutated ] = mutation2( osobnik,mapTerrainDifficulty, sampleMatrix )
 %%
     
     
@@ -30,7 +30,7 @@ function [ mutated ] = mutation2( osobnik, sampleMatrix )
         stopDistance=breakPoint2;
     end
     %}
-    connection=ConnectPoints(startPoint, stopPoint);
+    connection=anotherConnectPoints(startPoint, stopPoint, mapTerrainDifficulty, sampleMatrix);
     %%
     [connectionSize, ~] = size(connection);
     mutated=osobnik(1:startDistance,1:2);

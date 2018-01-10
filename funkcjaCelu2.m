@@ -16,7 +16,7 @@ function [ fCelu ] = funkcjaCelu2( individual, mapTerrainDifficulty, samplesMap,
     
     
     if petrolCost < fuel
-        penaltyFunction = 0;     %-5*petrolCost + 5*fuel;
+        penaltyFunction =( petrolCost-fuel)*0.01;     %-5*petrolCost + 5*fuel;
     else
         penaltyFunction = petrolCost-fuel;  %  0.3*(petrolCost-fuel).^2;
     end

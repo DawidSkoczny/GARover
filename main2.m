@@ -16,8 +16,8 @@ iloscProbek = min(iloscProbek, floor((mapSize^2)/4));
 populationSize = 200;
 howManyGenerations = 300;
 
-fuel = 1400;
-q=0.01;
+fuel = 800;
+q=0.0075;
 
 mutationProbability = 0.10;
 
@@ -49,17 +49,17 @@ punktPoczatkowy=[40 35];
 for i=1:populationSize
     
     ileProbekPolaczyc=randi([2, 15]);
-    connection=ConnectPoints(punktPoczatkowy, samplePositions(randi([1 length(samplePositions)]),:));
+    connection=anotherConnectPoints(punktPoczatkowy, samplePositions(randi([1 length(samplePositions)]),:), mapTerrainDifficulty, sampleMatrix);
     road=connection;
     [roadLength, ~] = size(road);
     for j=2:ileProbekPolaczyc
-        connection=ConnectPoints(road(roadLength,:), samplePositions(randi([1 length(samplePositions)]),:));
+        connection=anotherConnectPoints(road(roadLength,:), samplePositions(randi([1 length(samplePositions)]),:), mapTerrainDifficulty, sampleMatrix);
         [connectionLength, ~]=size(connection);
         road(roadLength:roadLength+connectionLength-1,:)=connection;
         [roadLength, ~] = size(road);
     end
    
-    connection=ConnectPoints(road(roadLength,:), punktPoczatkowy);
+    connection=anotherConnectPoints(road(roadLength,:), punktPoczatkowy, mapTerrainDifficulty, sampleMatrix);
     [connectionLength, ~] = size(connection);
     road(roadLength:roadLength+connectionLength-1,:)=connection;
     [roadLength, ~] = size(road);
@@ -101,7 +101,7 @@ for j = 1:howManyGenerations
     
     for i = 1:populationSize
         if rand < mutationProbability
-            population{i} = mutation2(population{i}, sampleMatrix);
+            population{i} = mutation2(population{i}, mapTerrainDifficulty, sampleMatrix);
         end
     end
     
@@ -132,7 +132,10 @@ for i=1:length(population)
     fitnessFunction(i) = funkcjaCelu2(population{1,i}, mapTerrainDifficulty, sampleMatrix, fuel);
 end
 [~, I] = sort(fitnessFunction, 'descend');
-
+    for i=1:populationSize
+        sortedPopulation{i}=population{I(i)};
+        sortedFitnessFunction(i)=fitnessFunction(I(i));
+    end
 
 figure
 surf(mapTerrainDifficulty)
@@ -157,13 +160,16 @@ nast=plot3(population{1, osobnik}(1, 2), population{1, osobnik}(1,1), wysokoscTr
 nast.MarkerSize=30;
 nast.LineWidth=6;
 
-str=sprintf('Najlepszy osobnik nr %i, jego funkcja celu to %d', I(1),fitnessFunction(I(1)))
+str=sprintf('Najlepszy osobnik nr %i, jego funkcja celu to %d', I(1),floor(fitnessFunction(I(1))))
 title(str)
 
 figure
 subplot(2,1,1)
 plot(bestGoalFunc);
+grid on;
 title('funckaj celu najlpeszego osobnika w populacji');
 subplot(2,1,2)
 plot(meanGoalFunc);
 title('srednia funkcja celu w danej populacji');
+axis([0, length(meanGoalFunc), -300, 100*ceil(max(meanGoalFunc)/100)]);
+grid on;

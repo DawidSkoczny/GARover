@@ -48,8 +48,8 @@ function [population] = crossover(oldSortedPopulation, PopulationSize, q, mapTer
         secondPoint1 = oldSortedPopulation{numOsobnika2}(whereToConnect + 1, 1:2);
         secondPoint2 = oldSortedPopulation{numOsobnika1}(whereToConnect + 1, 1:2);
         
-        connection1 = ConnectPoints(firstPoint1, secondPoint1);
-        connection2 = ConnectPoints(firstPoint2, secondPoint2);
+        connection1 = anotherConnectPoints(firstPoint1, secondPoint1, mapTerrainDifficulty, sampleMatrix);
+        connection2 = anotherConnectPoints(firstPoint2, secondPoint2, mapTerrainDifficulty, sampleMatrix);
         
         [connectionLength1, ~] = size(connection1);
         [connectionLength2, ~] = size(connection2);
