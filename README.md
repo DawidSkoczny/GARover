@@ -7,4 +7,7 @@ Progress:
 * Generating first population
 * Fitness function with penalty function
 * Crossover operator
-* Dijkstra algorithm to find best route between two unconnected points on map
+* Mutation operator
+* Genereting next populations
+* Stop condition
+* Visualisation of results
