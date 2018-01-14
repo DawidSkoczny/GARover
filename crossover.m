@@ -39,10 +39,6 @@ function [population] = crossover(oldSortedPopulation, PopulationSize, q, mapTer
 
         whereToConnect = randi([1 min(length(oldSortedPopulation{numOsobnika1}) - 2 , length(oldSortedPopulation{numOsobnika2}) - 2)]);
 
-        %warning('whereToConnect = %i', whereToConnect)
-        %warning('numOsobnika1 = %i', length(sortedPopulation{numOsobnika1}))
-        %warning('numOsobnika2 = %i', length(sortedPopulation{numOsobnika2}))
-        
         firstPoint1 = oldSortedPopulation{numOsobnika1}(whereToConnect, 1:2);
         firstPoint2 = oldSortedPopulation{numOsobnika2}(whereToConnect, 1:2);
         secondPoint1 = oldSortedPopulation{numOsobnika2}(whereToConnect + 1, 1:2);
@@ -54,7 +50,7 @@ function [population] = crossover(oldSortedPopulation, PopulationSize, q, mapTer
         [connectionLength1, ~] = size(connection1);
         [connectionLength2, ~] = size(connection2);
         
-        %
+        
         population{1,licznik}(1:whereToConnect, 1:2) = oldSortedPopulation{numOsobnika1}(1:whereToConnect, 1:2);
         population{1,licznik}(whereToConnect + 1:whereToConnect + connectionLength1, 1:2) = connection1(1:connectionLength1, 1:2);
         population{1,licznik}(whereToConnect + 1 + connectionLength1:length(oldSortedPopulation{numOsobnika2}) + connectionLength1, 1:2) = oldSortedPopulation{numOsobnika2}(whereToConnect + 1:length(oldSortedPopulation{numOsobnika2}), 1:2);
@@ -62,30 +58,9 @@ function [population] = crossover(oldSortedPopulation, PopulationSize, q, mapTer
         population{1,licznik + 1}(1:whereToConnect, 1:2) = oldSortedPopulation{numOsobnika2}(1:whereToConnect, 1:2);
         population{1,licznik + 1}(whereToConnect + 1:whereToConnect + connectionLength2, 1:2) = connection2(1:connectionLength2, 1:2);
         population{1,licznik + 1}(whereToConnect + 1 + connectionLength2:length(oldSortedPopulation{numOsobnika1}) + connectionLength2, 1:2) = oldSortedPopulation{numOsobnika1}(whereToConnect + 1:length(oldSortedPopulation{numOsobnika1}), 1:2);
-        %}
        
     end
      %% Wrzucenie 20 najlepszych osobnikow ze starej populacji do nowej
      population(1, length(population):length(population)+18)=oldSortedPopulation(1:1+18);
     
-    
-    %% Wybieranie najlepszych osobnik�w
-%{      
-    ja to bym sortowal populacje po mutacji
-    
-    fitnessFunction = zeros(newPopulationSize,1);
-
-    for i=1:newPopulationSize
-        fitnessFunction(i) = funkcjaCelu2(population{1,i}, mapTerrainDifficulty, sampleMatrix, fuel);
-    end
-
-    sortedPopulation{newPopulationSize} = 0;
-    [~, I] = sort(fitnessFunction, 'descend');
-    for i=1:newPopulationSize
-        sortedPopulation{i}=population{I(i)};
-    end
-    
-    sortedPopulation = sortedPopulation(1:oldPopulationSize);
-    %}
-    %%
 end

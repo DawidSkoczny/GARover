@@ -1,8 +1,5 @@
 function [ mutated ] = mutation2( osobnik,mapTerrainDifficulty, sampleMatrix )
-%%
-    
-    
- 
+
     [len, ~] = size(osobnik);
     collectedSamples=0;
     
@@ -13,8 +10,7 @@ function [ mutated ] = mutation2( osobnik,mapTerrainDifficulty, sampleMatrix )
             distanceFromStart(collectedSamples)=i;
         end
     end
-%%
-   %
+
     if collectedSamples>2
         breakPoint=randi([1 collectedSamples-1]);
         startPoint=samples(breakPoint,:);
@@ -29,15 +25,14 @@ function [ mutated ] = mutation2( osobnik,mapTerrainDifficulty, sampleMatrix )
         startDistance=breakPoint1;
         stopDistance=breakPoint2;
     end
-    %}
+    
     connection=anotherConnectPoints(startPoint, stopPoint, mapTerrainDifficulty, sampleMatrix);
-    %%
+    
     [connectionSize, ~] = size(connection);
     mutated=osobnik(1:startDistance,1:2);
     lenAfterConnection=startDistance+connectionSize;
     mutated(startDistance:lenAfterConnection-1,1:2)=connection(1:connectionSize,1:2);
     mutated(lenAfterConnection:lenAfterConnection+len-stopDistance-1,1:2)=osobnik(stopDistance+1:len,1:2);
 
-  %%
 end
 

@@ -1,6 +1,5 @@
 function [ road ] = anotherConnectPoints( startPoint, stopPoint, mapTerrainDifficulty, sampleMatrix )
 
-%   startPoint, stopPoint - vectors 1x2  [y x]
     [len, ~]=size(mapTerrainDifficulty);
 
     road=startPoint;
@@ -17,8 +16,8 @@ function [ road ] = anotherConnectPoints( startPoint, stopPoint, mapTerrainDiffi
         totalDistance=abs(xDistance)+abs(yDistance);
         xMovePropability=xDistance/totalDistance;
         
-      % ogranieczenie żaby przy czytaniu wartości z mapTerrain czy sampleMatrix
-      % nie wychodzić poza indeksy, pare ifów i powiino stykać;
+      % ogranieczenie zeby przy czytaniu wartosci z mapTerrain czy sampleMatrix
+      % nie wychodzic poza indeksy, pare ifow i powinno stykac;
       
         if xDistance>0
                 % w prawo, x++
@@ -71,7 +70,7 @@ function [ road ] = anotherConnectPoints( startPoint, stopPoint, mapTerrainDiffi
        
         
       
-        %   jesli koszt ruchu x<y to zwiększamy prawdopodoienswo wyboru x
+        %   jesli koszt ruchu x<y to zwiekszamy prawdopodoienswo wyboru x
         if kosztRuchuWX>0 & kosztRuchuWY>0
             xMovePropability=xMovePropability/(kosztRuchuWX/kosztRuchuWY);
         end

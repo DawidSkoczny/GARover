@@ -1,4 +1,4 @@
-function [ fCelu ] = funkcjaCelu2( individual, mapTerrainDifficulty, samplesMap, fuel )
+function [ fFunc ] = fitnessFunctionCalculate( individual, mapTerrainDifficulty, samplesMap, fuel )
 
     [roadLength, ~] = size(individual);
     petrolCost=0;
@@ -12,18 +12,14 @@ function [ fCelu ] = funkcjaCelu2( individual, mapTerrainDifficulty, samplesMap,
             samplesMap(individual(i,1), individual(i,2))=0; 
         end
     end
-    %wynik=[ petrolCost, samplesCollected ];
-    
     
     if petrolCost < fuel
-        penaltyFunction =( petrolCost-fuel)*0.01;     %-5*petrolCost + 5*fuel;
+        penaltyFunction =( petrolCost-fuel)*0.01;
     else
-        penaltyFunction = petrolCost-fuel;  %  0.3*(petrolCost-fuel).^2;
+        penaltyFunction = petrolCost-fuel;
     end
     
-    %samplesCollected
-    fCelu=10*samplesCollected - penaltyFunction;
-    %fCelu = 10*(log(samplesCollected)/log(2)+0.2*samplesCollected) - penaltyFunction;
-    % Wieksze znaczenie w jakim terenie sie porusza
+    fFunc=15*samplesCollected - penaltyFunction;
+    %fFunc = 10*(log(samplesCollected)/log(2)+0.2*samplesCollected) - penaltyFunction;
     
 end

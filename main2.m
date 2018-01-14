@@ -43,23 +43,23 @@ end
 
 firstPopulation{populationSize}=0;
 sortedPopulation{populationSize}=0;
-punktPoczatkowy=[40 35];
+startingPoint=[40 35];
 
 
 for i=1:populationSize
     
-    ileProbekPolaczyc=randi([2, 15]);
-    connection=anotherConnectPoints(punktPoczatkowy, samplePositions(randi([1 length(samplePositions)]),:), mapTerrainDifficulty, sampleMatrix);
+    howManySamplesToConnect=randi([2, 15]);
+    connection=anotherConnectPoints(startingPoint, samplePositions(randi([1 length(samplePositions)]),:), mapTerrainDifficulty, sampleMatrix);
     road=connection;
     [roadLength, ~] = size(road);
-    for j=2:ileProbekPolaczyc
+    for j=2:howManySamplesToConnect
         connection=anotherConnectPoints(road(roadLength,:), samplePositions(randi([1 length(samplePositions)]),:), mapTerrainDifficulty, sampleMatrix);
         [connectionLength, ~]=size(connection);
         road(roadLength:roadLength+connectionLength-1,:)=connection;
         [roadLength, ~] = size(road);
     end
    
-    connection=anotherConnectPoints(road(roadLength,:), punktPoczatkowy, mapTerrainDifficulty, sampleMatrix);
+    connection=anotherConnectPoints(road(roadLength,:), startingPoint, mapTerrainDifficulty, sampleMatrix);
     [connectionLength, ~] = size(connection);
     road(roadLength:roadLength+connectionLength-1,:)=connection;
     [roadLength, ~] = size(road);
@@ -70,13 +70,12 @@ end
 
 population = firstPopulation;
 
-%
 %% obliczenie funkcji celu
 
 fitnessFunction = zeros(populationSize,1);
 
 for i=1:populationSize
-    fitnessFunction(i) = funkcjaCelu2(population{1,i}, mapTerrainDifficulty, sampleMatrix, fuel);
+    fitnessFunction(i) = fitnessFunctionCalculate(population{1,i}, mapTerrainDifficulty, sampleMatrix, fuel);
 end
 
 %% sortowanie populacji
@@ -88,7 +87,6 @@ for i=1:populationSize
     sortedPopulation{i}=population{I(i)};
     sortedFitnessFunction(i)=fitnessFunction(I(i));
 end
-%}
 
 %% glowna petla
 bestGoalFunc=zeros(1,howManyGenerations);
@@ -109,27 +107,33 @@ for j = 1:howManyGenerations
     fitnessFunction = zeros(populationSize,1);
 
     for i=1:populationSize
-        fitnessFunction(i) = funkcjaCelu2(population{1,i}, mapTerrainDifficulty, sampleMatrix, fuel);
+        fitnessFunction(i) = fitnessFunctionCalculate(population{1,i}, mapTerrainDifficulty, sampleMatrix, fuel);
     end
-     [~, I] = sort(fitnessFunction, 'descend');
+    
+    [~, I] = sort(fitnessFunction, 'descend');
     for i=1:populationSize
         sortedPopulation{i}=population{I(i)};
         sortedFitnessFunction(i)=fitnessFunction(I(i));
     end
     
-    % krzyï¿½owanie na podstawie selekcji rankingowej
+    % krzyzowanie na podstawie selekcji rankingowej
     population = crossover(sortedPopulation, populationSize, q, mapTerrainDifficulty, sampleMatrix, fuel);
     bestGoalFunc(j)=max(fitnessFunction);
     meanGoalFunc(j)=mean(fitnessFunction);
-
+    
+    if j > 30 && bestGoalFunc(j) - bestGoalFunc(j-30) < 0.01*bestGoalFunc(j)
+        break
+    end
+    
 end
 
-%% tu trzebaby dijkstra optymalizowac trase najlepszego osobnika
+bestGoalFunc(j+1: howManyGenerations) = [];
+meanGoalFunc(j+1: howManyGenerations) = [];
 
 %% prezentacja wynikow
 %
 for i=1:length(population)
-    fitnessFunction(i) = funkcjaCelu2(population{1,i}, mapTerrainDifficulty, sampleMatrix, fuel);
+    fitnessFunction(i) = fitnessFunctionCalculate(population{1,i}, mapTerrainDifficulty, sampleMatrix, fuel);
 end
 [~, I] = sort(fitnessFunction, 'descend');
     for i=1:populationSize
@@ -142,34 +146,39 @@ surf(mapTerrainDifficulty)
 axis([0 mapSize 0 mapSize -mapSize/2 mapSize/2])
 title('Map of Difficulty Terrain')
 
-osobnik=I(1); % najlepszy osobnik
+bestIndividual=I(1); % najlepszy osobnik
 hold on
-wysokoscTrasy(length(population{1, osobnik}))=0;
-for i=1:length(population{1, osobnik})
-    wysokoscTrasy(i)=mapTerrainDifficulty(population{1, osobnik}(i,1),population{1, osobnik}(i,2)); 
+roadAltitude(length(population{1, bestIndividual}))=0;
+for i=1:length(population{1, bestIndividual})
+    roadAltitude(i)=mapTerrainDifficulty(population{1, bestIndividual}(i,1),population{1, bestIndividual}(i,2)); 
 end
-wysokoscProbek(length(samplePositions))=0;
+sampleAltitude(length(samplePositions))=0;
 for i=1:length(samplePositions)
-    wysokoscProbek(i)=mapTerrainDifficulty(samplePositions(i,1),samplePositions(i,2)); 
+    sampleAltitude(i)=mapTerrainDifficulty(samplePositions(i,1),samplePositions(i,2)); 
 end
 
 
-plot3(population{1, osobnik}(:, 2), population{1, osobnik}(:,1),wysokoscTrasy+0.2, 'magenta','LineWidth',2)
-plot3(samplePositions(:, 2), samplePositions(:, 1), wysokoscProbek+0.2, '.r','MarkerSize',16);
-nast=plot3(population{1, osobnik}(1, 2), population{1, osobnik}(1,1), wysokoscTrasy(1)+0.2, 'g.');
+plot3(population{1, bestIndividual}(:, 2), population{1, bestIndividual}(:,1),roadAltitude+0.2, 'magenta','LineWidth',2)
+plot3(samplePositions(:, 2), samplePositions(:, 1), sampleAltitude+0.2, '.r','MarkerSize',16);
+nast=plot3(population{1, bestIndividual}(1, 2), population{1, bestIndividual}(1,1), roadAltitude(1)+0.2, 'g.');
 nast.MarkerSize=30;
 nast.LineWidth=6;
 
-str=sprintf('Najlepszy osobnik nr %i, jego funkcja celu to %d', I(1),floor(fitnessFunction(I(1))))
+str = sprintf('Najlepszy osobnik o numerze %i w populacji, którego funkcja celu to %d', I(1),floor(fitnessFunction(I(1))))
 title(str)
 
 figure
 subplot(2,1,1)
 plot(bestGoalFunc);
 grid on;
-title('funckaj celu najlpeszego osobnika w populacji');
+title('Funkcja celu najlpeszego osobnika w danej populacji');
+axis([0, length(meanGoalFunc), 0, 100*ceil(max(bestGoalFunc)/100)]);
+xlabel('Numer populacji');
+ylabel('Wartoœæ funkcji celu');
 subplot(2,1,2)
 plot(meanGoalFunc);
-title('srednia funkcja celu w danej populacji');
+title('Œrednia funkcja celu osobników w danej populacji');
 axis([0, length(meanGoalFunc), -300, 100*ceil(max(meanGoalFunc)/100)]);
+xlabel('Numer populacji');
+ylabel('Wartoœæ funkcji celu');
 grid on;
