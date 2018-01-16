@@ -2,24 +2,24 @@
 clear variables;
 close all;
 
-%% inicjalizacja
+%% parametry symulacji
 
-terrainVariability = 5;
-mapSize = 100;
+terrainVariability = 2;
+mapSize = 500;
+numberOfBiomes = 6;
+biomeVariability = 0.8;
+iloscProbek = 999;
+fuel = 4000;
+
+howManyGenerations = 300;
+populationSize = 200;
+q=0.0075;
+mutationProbability = 0.10;
+
+%% inicjalizacja 
 mapSize = abs(floor(mapSize));
 terrainVariability = abs(floor(terrainVariability));
-biomeVariability = 0.8;
-numberOfBiomes = 6;
-
-iloscProbek = 300;
 iloscProbek = min(iloscProbek, floor((mapSize^2)/4));
-populationSize = 200;
-howManyGenerations = 300;
-
-fuel = 800;
-q=0.0075;
-
-mutationProbability = 0.10;
 
 mapTerrain = MapTerrain(terrainVariability, mapSize);
 mapBiome = MapBiome( biomeVariability, numberOfBiomes, mapSize);
@@ -89,8 +89,8 @@ for i=1:populationSize
 end
 
 %% glowna petla
-bestGoalFunc=zeros(1,howManyGenerations);
-meanGoalFunc=zeros(1,howManyGenerations);
+bestGoalFunc=zeros(1,30);
+meanGoalFunc=zeros(1,30);
 
 for j = 1:howManyGenerations
 
@@ -121,14 +121,14 @@ for j = 1:howManyGenerations
     bestGoalFunc(j)=max(fitnessFunction);
     meanGoalFunc(j)=mean(fitnessFunction);
     
-    if j > 30 && bestGoalFunc(j) - bestGoalFunc(j-30) < 0.01*bestGoalFunc(j)
+    if j > 40 && abs(bestGoalFunc(j)-mean(bestGoalFunc(j-40:j))) < 0.005*bestGoalFunc(j)
         break
     end
     
 end
 
-bestGoalFunc(j+1: howManyGenerations) = [];
-meanGoalFunc(j+1: howManyGenerations) = [];
+%bestGoalFunc(j+1: howManyGenerations) = [];
+%meanGoalFunc(j+1: howManyGenerations) = [];
 
 %% prezentacja wynikow
 %
@@ -164,7 +164,7 @@ nast=plot3(population{1, bestIndividual}(1, 2), population{1, bestIndividual}(1,
 nast.MarkerSize=30;
 nast.LineWidth=6;
 
-str = sprintf('Najlepszy osobnik o numerze %i w populacji, którego funkcja celu to %d', I(1),floor(fitnessFunction(I(1))))
+str = sprintf('Najlepszy osobnik o numerze %i w populacji, ktï¿½rego funkcja celu to %d', I(1),floor(fitnessFunction(I(1))))
 title(str)
 
 figure
@@ -174,11 +174,11 @@ grid on;
 title('Funkcja celu najlpeszego osobnika w danej populacji');
 axis([0, length(meanGoalFunc), 0, 100*ceil(max(bestGoalFunc)/100)]);
 xlabel('Numer populacji');
-ylabel('Wartoœæ funkcji celu');
+ylabel('Wartoï¿½ï¿½ funkcji celu');
 subplot(2,1,2)
 plot(meanGoalFunc);
-title('Œrednia funkcja celu osobników w danej populacji');
+title('ï¿½rednia funkcja celu osobnikï¿½w w danej populacji');
 axis([0, length(meanGoalFunc), -300, 100*ceil(max(meanGoalFunc)/100)]);
 xlabel('Numer populacji');
-ylabel('Wartoœæ funkcji celu');
+ylabel('Wartoï¿½ï¿½ funkcji celu');
 grid on;
